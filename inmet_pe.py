@@ -1,7 +1,6 @@
 import requests
 import json
 import boto3
-import time
 
 def buscar_dados_pe(data, hora):
     request = requests.get(
