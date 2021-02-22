@@ -2,6 +2,7 @@ import requests
 import json
 import boto3
 
+
 def buscar_dados_pe(data, hora):
     request = requests.get(
         'https://apitempo.inmet.gov.br/estacao/dados/{}/{}'
@@ -19,12 +20,11 @@ def buscar_dados_pe(data, hora):
 
 def stream_dados(dados):
     client = boto3.client('kinesis')
-    response = client.put_record(
-        StreamName = 'input_stream',
-        Data = json.dumps(dados),
-        PartitionKey = 'PartitionKey'
+    client.put_record(
+        StreamName='input_stream',
+        Data=json.dumps(dados),
+        PartitionKey='PartitionKey'
     )
-    return response
 
 
 def main(event, context):
