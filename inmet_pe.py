@@ -1,3 +1,4 @@
+from datetime import datetime, timezone, timedelta
 import requests
 import json
 import boto3
@@ -28,8 +29,14 @@ def stream_dados(dados):
 
 
 def main(event, context):
-    data = event['d']
-    hora = event['h']
+    timestamp = datetime.now()
+    fuso_horario = timezone(timedelta(hours=-3))
+    time_recife = timestamp.astimezone(fuso_horario)
+    data = time_recife.strftime('%Y-%m-%d')
+    hora = time_recife.strftime('%H') + '00'
     dados_pe = buscar_dados_pe(data, hora)
     stream_dados(dados_pe)
-    return dados_pe
+    return {
+        'statusCode': 200,
+        'body': json.dumps('Hello from Lambda!')
+    }
